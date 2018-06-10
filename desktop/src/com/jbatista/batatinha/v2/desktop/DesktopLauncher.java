@@ -8,6 +8,12 @@ public class DesktopLauncher {
 
     public static void main(String[] arg) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+        config.title = "Batatinha";
+        config.vSyncEnabled = true;
+        config.resizable = false;
+        config.width = 450;
+        config.height = 800;
+
         new LwjglApplication(new BatatinhaGame(), config);
     }
 }
