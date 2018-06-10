@@ -16,8 +16,10 @@ public class Chip8Actor extends Actor {
 
     private final Chip8 chip8 = new Chip8();
     private final Pixmap pixmap = new Pixmap(128, 64, Pixmap.Format.RGB888);
-    private int canvasWidth = 512;
-    private int canvasHeight = 256;
+    private int canvasWidth = 128;
+    private int canvasHeight = 64;
+    private float posX = 0;
+    private float posY = 0;
     private Texture texture;
 
     private int cpuSpeed = 500;
@@ -69,13 +71,19 @@ public class Chip8Actor extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(texture, 0, 0, canvasWidth, canvasHeight);
+        batch.draw(texture, posX, posY, canvasWidth, canvasHeight);
     }
 
     @Override
     public void scaleBy(float scale) {
         this.canvasWidth *= scale;
         this.canvasHeight *= scale;
+    }
+
+    @Override
+    public void setPosition(float x, float y) {
+        posX = x;
+        posY = y;
     }
 
     @Override

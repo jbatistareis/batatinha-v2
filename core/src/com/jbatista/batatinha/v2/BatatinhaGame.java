@@ -9,14 +9,10 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class BatatinhaGame extends ApplicationAdapter {
 
-    private final Chip8InputProcessor inputProcessor;
+    private final Chip8InputProcessor inputProcessor = new KeyboardProcessor();
     private ScreenViewport viewport;
     private Stage stage;
     private Chip8Actor chip8Actor;
-
-    public BatatinhaGame(Chip8InputProcessor inputProcessor) {
-        this.inputProcessor = inputProcessor;
-    }
 
     @Override
     public void create() {
