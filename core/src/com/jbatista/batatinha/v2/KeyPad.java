@@ -3,7 +3,6 @@ package com.jbatista.batatinha.v2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 import com.jbatista.batatinha.core.Key;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
@@ -50,6 +49,7 @@ public class KeyPad {
                 chip8Actor.releaseKey(Key.KEY_0);
             }
         });
+
         button1.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -62,6 +62,7 @@ public class KeyPad {
                 chip8Actor.releaseKey(Key.KEY_1);
             }
         });
+
         button2.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -74,6 +75,7 @@ public class KeyPad {
                 chip8Actor.releaseKey(Key.KEY_2);
             }
         });
+
         button3.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -86,6 +88,7 @@ public class KeyPad {
                 chip8Actor.releaseKey(Key.KEY_3);
             }
         });
+
         button4.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -98,6 +101,7 @@ public class KeyPad {
                 chip8Actor.releaseKey(Key.KEY_4);
             }
         });
+
         button5.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -110,6 +114,7 @@ public class KeyPad {
                 chip8Actor.releaseKey(Key.KEY_5);
             }
         });
+
         button6.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -122,6 +127,7 @@ public class KeyPad {
                 chip8Actor.releaseKey(Key.KEY_6);
             }
         });
+
         button7.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -134,6 +140,7 @@ public class KeyPad {
                 chip8Actor.releaseKey(Key.KEY_7);
             }
         });
+
         button8.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -146,6 +153,7 @@ public class KeyPad {
                 chip8Actor.releaseKey(Key.KEY_8);
             }
         });
+
         button9.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -158,6 +166,7 @@ public class KeyPad {
                 chip8Actor.releaseKey(Key.KEY_9);
             }
         });
+
         buttonA.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -170,6 +179,7 @@ public class KeyPad {
                 chip8Actor.releaseKey(Key.KEY_A);
             }
         });
+
         buttonB.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -182,6 +192,7 @@ public class KeyPad {
                 chip8Actor.releaseKey(Key.KEY_B);
             }
         });
+
         buttonC.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -194,6 +205,7 @@ public class KeyPad {
                 chip8Actor.releaseKey(Key.KEY_C);
             }
         });
+
         buttonD.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -206,6 +218,7 @@ public class KeyPad {
                 chip8Actor.releaseKey(Key.KEY_D);
             }
         });
+
         buttonE.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -218,6 +231,7 @@ public class KeyPad {
                 chip8Actor.releaseKey(Key.KEY_E);
             }
         });
+
         buttonF.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -232,25 +246,13 @@ public class KeyPad {
         });
         // </editor-fold>
 
-        keyPadTable.add(button1.pad(padding));
-        keyPadTable.add(button2.pad(padding));
-        keyPadTable.add(button3.pad(padding));
-        keyPadTable.add(buttonC.pad(padding));
+        keyPadTable.add(button1.pad(padding), button2.pad(padding), button3.pad(padding), buttonC.pad(padding));
         keyPadTable.row();
-        keyPadTable.add(button4.pad(padding));
-        keyPadTable.add(button5.pad(padding));
-        keyPadTable.add(button6.pad(padding));
-        keyPadTable.add(buttonD.pad(padding));
+        keyPadTable.add(button4.pad(padding), button5.pad(padding), button6.pad(padding), buttonD.pad(padding));
         keyPadTable.row();
-        keyPadTable.add(button7.pad(padding));
-        keyPadTable.add(button8.pad(padding));
-        keyPadTable.add(button9.pad(padding));
-        keyPadTable.add(buttonE.pad(padding));
+        keyPadTable.add(button7.pad(padding), button8.pad(padding), button9.pad(padding), buttonE.pad(padding));
         keyPadTable.row();
-        keyPadTable.add(buttonA.pad(padding));
-        keyPadTable.add(button0.pad(padding));
-        keyPadTable.add(buttonB.pad(padding));
-        keyPadTable.add(buttonF.pad(padding));
+        keyPadTable.add(buttonA.pad(padding), button0.pad(padding), buttonB.pad(padding), buttonF.pad(padding));
 
         return keyPadTable;
     }

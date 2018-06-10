@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -25,6 +24,8 @@ public class BatatinhaGame extends ApplicationAdapter {
     private Table rootTable;
     private Chip8Actor chip8Actor;
 
+    private static final int padding = 25;
+
     @Override
     public void create() {
         VisUI.load();
@@ -37,11 +38,9 @@ public class BatatinhaGame extends ApplicationAdapter {
         rootTable = new VisTable(true);
         rootTable.setFillParent(true);
 
-        rootTable.add(chip8Actor).align(Align.top);
-        rootTable.row().fillY();
-        rootTable.add(new KeyPad(chip8Actor).getTable()).align(Align.center);
-        rootTable.row().fillY();
-        rootTable.add(new Toolbar(chip8Actor).getTable()).align(Align.bottom);
+        rootTable.add(chip8Actor).pad(padding).row();
+        rootTable.add(new KeyPad(chip8Actor).getTable()).pad(padding).row();
+        rootTable.add(new Toolbar(chip8Actor, stage).getTable()).pad(padding).row();
 
         stage.addActor(rootTable);
 
