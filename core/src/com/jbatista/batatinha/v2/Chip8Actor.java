@@ -9,8 +9,6 @@ import com.jbatista.batatinha.core.Chip8;
 import com.jbatista.batatinha.core.Key;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Chip8Actor extends Actor {
 
@@ -28,14 +26,6 @@ public class Chip8Actor extends Actor {
 
     private int bufferPosition;
     private int scale;
-
-    public Chip8Actor() {
-        try {
-            startProgram("");
-        } catch (IOException ex) {
-            Logger.getLogger(Chip8Actor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     @Override
     public void act(float delta) {
@@ -93,7 +83,7 @@ public class Chip8Actor extends Actor {
     }
 
     public void startProgram(String program) throws IOException {
-        chip8.loadProgram(new File("D:\\Users\\joao\\Desktop\\CHIP8", "BRIX"));
+        chip8.loadProgram(new File(program));
         resetProgram();
     }
 
