@@ -14,10 +14,6 @@ public class Chip8Actor extends Actor {
 
     private final Chip8 chip8 = new Chip8();
     private final Pixmap pixmap = new Pixmap(128, 64, Pixmap.Format.RGB888);
-    private int canvasWidth = 128;
-    private int canvasHeight = 64;
-    private float posX = 0;
-    private float posY = 0;
     private Texture texture;
 
     private int cpuSpeed = 500;
@@ -25,7 +21,11 @@ public class Chip8Actor extends Actor {
     private Color pixelColor = Color.WHITE;
 
     private int bufferPosition;
-    private int scale;
+    private int scale = 1;
+
+    public Chip8Actor() {
+        setSize(128, 64);
+    }
 
     @Override
     public void act(float delta) {
@@ -61,19 +61,12 @@ public class Chip8Actor extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(texture, posX, posY, canvasWidth, canvasHeight);
+        batch.draw(texture, getX(), getY(), getWidth(), getHeight());
     }
 
     @Override
     public void scaleBy(float scale) {
-        canvasWidth *= scale;
-        canvasHeight *= scale;
-    }
-
-    @Override
-    public void setPosition(float x, float y) {
-        posX = x;
-        posY = y;
+        setSize(getWidth() * scale, getHeight() * scale);
     }
 
     @Override
@@ -91,7 +84,7 @@ public class Chip8Actor extends Actor {
         chip8.reset();
     }
 
-    public void changeCpuSpeed(int cpuSpeed) {
+    public void setCpuSpeed(int cpuSpeed) {
         this.cpuSpeed = cpuSpeed;
     }
 
