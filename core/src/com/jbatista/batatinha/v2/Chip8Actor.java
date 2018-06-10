@@ -22,6 +22,7 @@ public class Chip8Actor extends Actor {
 
     private int bufferPosition;
     private int scale = 1;
+    private boolean pause = false;
 
     public Chip8Actor() {
         setSize(128, 64);
@@ -34,8 +35,10 @@ public class Chip8Actor extends Actor {
             // libgdx doesnt play nice with sine waves... T_T
         }
 
-        for (int i = 0; i < (cpuSpeed * delta); i++) {
-            chip8.cpuTick();
+        if (!pause) {
+            for (int i = 0; i < (cpuSpeed * delta); i++) {
+                chip8.cpuTick();
+            }
         }
 
         // find out ratio of pixels
@@ -82,6 +85,10 @@ public class Chip8Actor extends Actor {
 
     public void resetProgram() {
         chip8.reset();
+    }
+
+    public void togglePause() {
+        pause = !pause;
     }
 
     public void setCpuSpeed(int cpuSpeed) {

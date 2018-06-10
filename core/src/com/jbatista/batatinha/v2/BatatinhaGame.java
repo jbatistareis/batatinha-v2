@@ -22,8 +22,8 @@ public class BatatinhaGame extends ApplicationAdapter {
     private final Chip8InputProcessor inputProcessor = new KeyboardProcessor();
     private Camera camera;
     private Stage stage;
+    private Table rootTable;
     private Chip8Actor chip8Actor;
-    private KeyPad keyPad;
 
     @Override
     public void create() {
@@ -32,13 +32,16 @@ public class BatatinhaGame extends ApplicationAdapter {
         stage = new Stage(new ScreenViewport(camera));
 
         chip8Actor = new Chip8Actor();
-        keyPad = new KeyPad(chip8Actor);
         inputProcessor.setChip8Actor(chip8Actor);
 
-        final Table rootTable = new VisTable(true).align(Align.top);
-        rootTable.add(chip8Actor);
-        rootTable.row();
-        rootTable.add(keyPad.getTable());
+        rootTable = new VisTable(true);
+        rootTable.setFillParent(true);
+
+        rootTable.add(chip8Actor).align(Align.top);
+        rootTable.row().fillY();
+        rootTable.add(new KeyPad(chip8Actor).getTable()).align(Align.center);
+        rootTable.row().fillY();
+        rootTable.add(new Toolbar(chip8Actor).getTable()).align(Align.bottom);
 
         stage.addActor(rootTable);
 
@@ -67,7 +70,7 @@ public class BatatinhaGame extends ApplicationAdapter {
         chip8Actor.scaleBy(Gdx.graphics.getWidth() / chip8Actor.getWidth());
         camera.viewportWidth = width;
         camera.viewportHeight = height;
-        camera.position.set(0, -height / 2, 0);
+        camera.position.set(width / 2, height / 2, 0);
         stage.getViewport().update(width, height);
     }
 

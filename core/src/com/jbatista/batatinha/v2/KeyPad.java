@@ -12,7 +12,7 @@ public class KeyPad {
 
     private final Chip8Actor chip8Actor;
 
-    private final Table keyPadTable = new VisTable(true).align(Align.center);
+    private final Table keyPadTable = new VisTable(true);
     private final VisTextButton button0 = new VisTextButton("0");
     private final VisTextButton button1 = new VisTextButton("1");
     private final VisTextButton button2 = new VisTextButton("2");
