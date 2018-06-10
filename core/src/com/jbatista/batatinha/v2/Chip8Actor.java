@@ -19,7 +19,10 @@ public class Chip8Actor extends Actor {
     private int canvasHeight = 256;
     private Texture texture;
 
-    private int cpuSpeed = 1500;
+    private int cpuSpeed = 500;
+    private Color backgroundColor = Color.BLACK;
+    private Color pixelColor = Color.WHITE;
+
     private int bufferPosition;
     private int scale;
 
@@ -35,22 +38,23 @@ public class Chip8Actor extends Actor {
     public void act(float delta) {
         if (chip8.timerTick()) {
             // beep!
+            // libgdx doesnt play nice with sine waves... T_T
         }
 
         for (int i = 0; i < (cpuSpeed * delta); i++) {
             chip8.cpuTick();
         }
 
-        // find out proportion of display
-        scale = (chip8.getDisplayBuffer().length == 2048) ? 2 : 0;
+        // find out ratio of pixels
+        scale = (chip8.getDisplayBuffer().length == 2048) ? 2 : 1;
 
         // fill background
-        pixmap.setColor(Color.BLACK);
+        pixmap.setColor(backgroundColor);
         pixmap.fill();
 
         // draw pixels
         bufferPosition = 0;
-        pixmap.setColor(Color.WHITE);
+        pixmap.setColor(pixelColor);
         for (int y = 0; y < 64; y += scale) {
             for (int x = 0; x < 128; x += scale) {
                 if (chip8.getDisplayBuffer()[bufferPosition++] == 1) {
@@ -80,12 +84,16 @@ public class Chip8Actor extends Actor {
     }
 
     public void startProgram(String program) throws IOException {
-        chip8.loadProgram(new File("D:\\Users\\joao\\Desktop\\CHIP8", "BLINKY"));
+        chip8.loadProgram(new File("D:\\Users\\joao\\Desktop\\CHIP8", "BRIX"));
         resetProgram();
     }
 
     public void resetProgram() {
         chip8.reset();
+    }
+
+    public void changeCpuSpeed(int newSpeed) {
+        this.cpuSpeed = newSpeed;
     }
 
     public void pressKey() {
