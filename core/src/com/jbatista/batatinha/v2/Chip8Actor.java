@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jbatista.batatinha.core.Chip8;
+import com.jbatista.batatinha.core.Key;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -96,12 +97,12 @@ public class Chip8Actor extends Actor {
         this.cpuSpeed = newSpeed;
     }
 
-    public void pressKey() {
-        chip8.getInput();
+    public void pressKey(Key key) {
+        chip8.presKey(key);
     }
 
-    public void releaseKey() {
-        chip8.getInput();
+    public void releaseKey(Key key) {
+        chip8.releaseKey(key);
     }
 
 }
