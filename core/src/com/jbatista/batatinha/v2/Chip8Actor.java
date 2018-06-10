@@ -105,6 +105,14 @@ public class Chip8Actor extends Actor {
         this.cpuSpeed = newSpeed;
     }
 
+    public void setBackgroundColor(Color color) {
+        this.backgroundColor = color;
+    }
+
+    public void setPixelColor(Color color) {
+        this.pixelColor = color;
+    }
+
     public void pressKey(Key key) {
         chip8.presKey(key);
     }
