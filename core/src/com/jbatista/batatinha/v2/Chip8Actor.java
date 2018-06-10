@@ -66,8 +66,8 @@ public class Chip8Actor extends Actor {
 
     @Override
     public void scaleBy(float scale) {
-        this.canvasWidth *= scale;
-        this.canvasHeight *= scale;
+        canvasWidth *= scale;
+        canvasHeight *= scale;
     }
 
     @Override
@@ -91,16 +91,16 @@ public class Chip8Actor extends Actor {
         chip8.reset();
     }
 
-    public void changeCpuSpeed(int newSpeed) {
-        this.cpuSpeed = newSpeed;
+    public void changeCpuSpeed(int cpuSpeed) {
+        this.cpuSpeed = cpuSpeed;
     }
 
-    public void setBackgroundColor(Color color) {
-        this.backgroundColor = color;
+    public void setBackgroundColor(Color backgroundColor) {
+        this.backgroundColor = backgroundColor;
     }
 
-    public void setPixelColor(Color color) {
-        this.pixelColor = color;
+    public void setPixelColor(Color pixelColor) {
+        this.pixelColor = pixelColor;
     }
 
     public void pressKey(Key key) {
