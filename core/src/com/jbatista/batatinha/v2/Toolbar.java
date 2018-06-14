@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSelectBox;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
@@ -34,8 +35,11 @@ public class Toolbar {
 
     private final VisWindow settingsWindow = new VisWindow("Settings");
     private final Table settingsTable = new VisTable(true);
+    private final VisLabel cpuSpeedLabel = new VisLabel("Emulated CPU speed");
     private final VisSelectBox<String> cpuSpeedSelect = new VisSelectBox();
+    private final VisLabel beepNoteLabel = new VisLabel("Speaker note");
     private final VisSelectBox<String> beepNoteSelect = new VisSelectBox();
+    private final VisLabel colorsLabel = new VisLabel("Display colors");
     private final VisTextButton openBackgroundColorPicker = new VisTextButton("Background");
     private final VisTextButton openPixelColorPicker = new VisTextButton("Pixel");
     private ColorPicker backgroundColorPicker;
@@ -77,6 +81,7 @@ public class Toolbar {
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="settings window, double click to expand (Netbeans)">
+        // cpu
         cpuSpeedSelect.setItems("500 Hz", "1 MHz", "2 MHz", "3.68 MHz");
         cpuSpeedSelect.addListener(new ChangeListener() {
             @Override
@@ -100,11 +105,29 @@ public class Toolbar {
             }
         });
 
+        // speaker
         beepNoteSelect.setItems("B", "A", "C", "D", "E", "F", "G");
         beepNoteSelect.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeListener.ChangeEvent ce, Actor actor) {
-                // change note
+                switch (beepNoteSelect.getSelectedIndex()) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    default:
+                        break;
+                }
             }
         });
 
