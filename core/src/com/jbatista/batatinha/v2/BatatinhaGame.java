@@ -12,9 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisTable;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class BatatinhaGame extends ApplicationAdapter {
 
@@ -49,11 +46,7 @@ public class BatatinhaGame extends ApplicationAdapter {
         multiplexer.addProcessor((InputProcessor) inputProcessor);
         Gdx.input.setInputProcessor(multiplexer);
 
-        try {
-            chip8Actor.startProgram("D:\\Users\\joao\\Desktop\\CHIP8\\BRIX");
-        } catch (IOException ex) {
-            Logger.getLogger(BatatinhaGame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Gdx.graphics.setContinuousRendering(false);
     }
 
     @Override

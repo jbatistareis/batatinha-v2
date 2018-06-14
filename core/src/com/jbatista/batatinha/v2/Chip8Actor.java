@@ -1,5 +1,6 @@
 package com.jbatista.batatinha.v2;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,7 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jbatista.batatinha.core.Chip8;
 import com.jbatista.batatinha.core.Key;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class Chip8Actor extends Actor {
 
@@ -22,7 +25,7 @@ public class Chip8Actor extends Actor {
 
     private int bufferPosition;
     private int scale = 1;
-    private boolean pause = false;
+    private boolean pause = true;
 
     public Chip8Actor() {
         setSize(128, 64);
@@ -74,20 +77,33 @@ public class Chip8Actor extends Actor {
 
     @Override
     protected void finalize() throws Throwable {
-        pixmap.dispose();
         texture.dispose();
     }
 
-    public void startProgram(String program) throws IOException {
-        chip8.loadProgram(new File(program));
+    public void startProgram(InputStream program) throws IOException {
+        chip8.loadProgram(program);
+        resetProgram();
+    }
+
+    public void startProgram(File program) throws IOException {
+        chip8.loadProgram(new FileInputStream(program));
         resetProgram();
     }
 
     public void resetProgram() {
+        pause = true;
+        Gdx.graphics.requestRendering();
         chip8.reset();
+        pause = false;
     }
 
     public void togglePause() {
+        if (pause) {
+            Gdx.graphics.requestRendering();
+        } else {
+            Gdx.graphics.setContinuousRendering(false);
+        }
+
         pause = !pause;
     }
 

@@ -20,8 +20,10 @@ public class Toolbar {
     private final VisTextButton reset = new VisTextButton("Reset");
 
     private final VisWindow loadWindow = new VisWindow("Load new program");
+    private final Table loadTable = new VisTable(true);
 
     private final VisWindow settingsWindow = new VisWindow("Settings");
+    private final Table settingsTable = new VisTable(true);
 
     private final VisWindow resetWindow = new VisWindow("Reset?");
     private final Table resetTable = new VisTable(true);
@@ -38,14 +40,13 @@ public class Toolbar {
     public Table getTable() {
         // <editor-fold defaultstate="collapsed" desc="load window, double click to expand (Netbeans)">
         loadWindow.setModal(true);
-        loadWindow.setCenterOnAdd(true);
-        loadWindow.setMovable(false);
+        loadWindow.setFillParent(true);
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="settings window, double click to expand (Netbeans)">
         settingsWindow.setModal(true);
-        settingsWindow.setCenterOnAdd(true);
-        settingsWindow.setMovable(false);
+        settingsWindow.setFillParent(true);
+        settingsWindow.add(settingsTable);
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="reset window, double click to expand (Netbeans)">
