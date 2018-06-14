@@ -8,17 +8,17 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisTable;
+import com.kotcrab.vis.ui.widget.file.FileChooser;
 
 public class BatatinhaGame extends ApplicationAdapter {
 
     private final Chip8InputProcessor inputProcessor = new KeyboardProcessor();
     private Camera camera;
     private Stage stage;
-    private Table rootTable;
+    private VisTable rootTable;
     private Chip8Actor chip8Actor;
 
     private static final int padding = 25;
@@ -26,6 +26,8 @@ public class BatatinhaGame extends ApplicationAdapter {
     @Override
     public void create() {
         VisUI.load();
+        FileChooser.setDefaultPrefsName("com.jbatista.batatinha.v2.filechooser");
+
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage = new Stage(new ScreenViewport(camera));
 
@@ -45,8 +47,6 @@ public class BatatinhaGame extends ApplicationAdapter {
         multiplexer.addProcessor(stage);
         multiplexer.addProcessor((InputProcessor) inputProcessor);
         Gdx.input.setInputProcessor(multiplexer);
-
-        Gdx.graphics.setContinuousRendering(false);
     }
 
     @Override

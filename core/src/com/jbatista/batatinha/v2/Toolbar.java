@@ -1,5 +1,6 @@
 package com.jbatista.batatinha.v2;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -7,6 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisWindow;
+import com.kotcrab.vis.ui.widget.file.FileChooser;
+import com.kotcrab.vis.ui.widget.file.FileChooser.Mode;
+import com.kotcrab.vis.ui.widget.file.SingleFileChooserListener;
+import java.io.IOException;
 
 public class Toolbar {
 
@@ -19,14 +24,15 @@ public class Toolbar {
     private final VisTextButton settings = new VisTextButton("Settings");
     private final VisTextButton reset = new VisTextButton("Reset");
 
-    private final VisWindow loadWindow = new VisWindow("Load new program");
     private final Table loadTable = new VisTable(true);
+
+    private FileChooser fileChooser = new FileChooser(Mode.OPEN);
 
     private final VisWindow settingsWindow = new VisWindow("Settings");
     private final Table settingsTable = new VisTable(true);
 
     private final VisWindow resetWindow = new VisWindow("Reset?");
-    private final Table resetTable = new VisTable(true);
+    private final VisTable resetTable = new VisTable(true);
     private final VisTextButton resetYes = new VisTextButton("Yes");
     private final VisTextButton resetNo = new VisTextButton("No");
 
@@ -39,8 +45,25 @@ public class Toolbar {
 
     public Table getTable() {
         // <editor-fold defaultstate="collapsed" desc="load window, double click to expand (Netbeans)">
-        loadWindow.setModal(true);
-        loadWindow.setFillParent(true);
+        fileChooser.setModal(true);
+        fileChooser.setFillParent(true);
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
+        fileChooser.setListener(new SingleFileChooserListener() {
+            @Override
+            protected void selected(FileHandle fh) {
+                try {
+                    chip8Actor.startProgram(fh.read());
+                } catch (IOException ex) {
+                    // some sort feedback
+                }
+            }
+
+            @Override
+            public void canceled() {
+                chip8Actor.resume();
+            }
+        });
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="settings window, double click to expand (Netbeans)">
@@ -56,16 +79,15 @@ public class Toolbar {
         resetYes.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                resetWindow.fadeOut(0);
+                resetWindow.fadeOut();
                 chip8Actor.resetProgram();
-                chip8Actor.togglePause();
             }
         });
         resetNo.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                resetWindow.fadeOut(0);
-                chip8Actor.togglePause();
+                resetWindow.fadeOut();
+                chip8Actor.resume();
             }
         });
         resetTable.add(resetYes.pad(padding), resetNo.pad(padding));
@@ -83,24 +105,24 @@ public class Toolbar {
         load.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                chip8Actor.togglePause();
-                stage.addActor(loadWindow.fadeIn(0));
+                chip8Actor.pause();
+                stage.addActor(fileChooser.fadeIn());
             }
         });
 
         settings.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                chip8Actor.togglePause();
-                stage.addActor(settingsWindow.fadeIn(0));
+                chip8Actor.pause();
+                stage.addActor(settingsWindow.fadeIn());
             }
         });
 
         reset.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                chip8Actor.togglePause();
-                stage.addActor(resetWindow.fadeIn(0));
+                chip8Actor.pause();
+                stage.addActor(resetWindow.fadeIn());
             }
         });
         // </editor-fold>

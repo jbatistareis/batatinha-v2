@@ -1,6 +1,5 @@
 package com.jbatista.batatinha.v2;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,8 +7,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jbatista.batatinha.core.Chip8;
 import com.jbatista.batatinha.core.Key;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -67,6 +64,7 @@ public class Chip8Actor extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        batch.setColor(Color.WHITE);
         batch.draw(texture, getX(), getY(), getWidth(), getHeight());
     }
 
@@ -85,26 +83,26 @@ public class Chip8Actor extends Actor {
         resetProgram();
     }
 
-    public void startProgram(File program) throws IOException {
-        chip8.loadProgram(new FileInputStream(program));
-        resetProgram();
-    }
-
     public void resetProgram() {
-        pause = true;
-        Gdx.graphics.requestRendering();
+        pause();
         chip8.reset();
-        pause = false;
+        resume();
     }
 
     public void togglePause() {
-        if (pause) {
-            Gdx.graphics.requestRendering();
-        } else {
-            Gdx.graphics.setContinuousRendering(false);
-        }
-
         pause = !pause;
+    }
+
+    public void pause() {
+        pause = true;
+    }
+
+    public void resume() {
+        pause = false;
+    }
+
+    public boolean isPaused() {
+        return pause;
     }
 
     public void setCpuSpeed(int cpuSpeed) {
