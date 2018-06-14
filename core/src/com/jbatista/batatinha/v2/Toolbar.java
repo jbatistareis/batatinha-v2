@@ -1,13 +1,19 @@
 package com.jbatista.batatinha.v2;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.kotcrab.vis.ui.widget.VisSelectBox;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisWindow;
+import com.kotcrab.vis.ui.widget.color.ColorPicker;
+import com.kotcrab.vis.ui.widget.color.ColorPickerAdapter;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooser.Mode;
 import com.kotcrab.vis.ui.widget.file.SingleFileChooserListener;
@@ -24,12 +30,16 @@ public class Toolbar {
     private final VisTextButton settings = new VisTextButton("Settings");
     private final VisTextButton reset = new VisTextButton("Reset");
 
-    private final Table loadTable = new VisTable(true);
-
     private FileChooser fileChooser = new FileChooser(Mode.OPEN);
 
     private final VisWindow settingsWindow = new VisWindow("Settings");
     private final Table settingsTable = new VisTable(true);
+    private final VisSelectBox<String> cpuSpeedSelect = new VisSelectBox();
+    private final VisSelectBox<String> beepNoteSelect = new VisSelectBox();
+    private final VisTextButton openBackgroundColorPicker = new VisTextButton("Background");
+    private final VisTextButton openPixelColorPicker = new VisTextButton("Pixel");
+    private ColorPicker backgroundColorPicker;
+    private ColorPicker pixelColorPicker;
 
     private final VisWindow resetWindow = new VisWindow("Reset?");
     private final VisTable resetTable = new VisTable(true);
@@ -67,6 +77,71 @@ public class Toolbar {
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="settings window, double click to expand (Netbeans)">
+        cpuSpeedSelect.setItems("500 Hz", "1 MHz", "2 MHz", "3.68 MHz");
+        cpuSpeedSelect.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeListener.ChangeEvent ce, Actor actor) {
+                switch (cpuSpeedSelect.getSelectedIndex()) {
+                    case 0:
+                        chip8Actor.setCpuSpeed(500);
+                        break;
+                    case 1:
+                        chip8Actor.setCpuSpeed(1000);
+                        break;
+                    case 2:
+                        chip8Actor.setCpuSpeed(2000);
+                        break;
+                    case 3:
+                        chip8Actor.setCpuSpeed(3680);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
+        beepNoteSelect.setItems("B", "A", "C", "D", "E", "F", "G");
+        beepNoteSelect.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeListener.ChangeEvent ce, Actor actor) {
+                // change note
+            }
+        });
+
+        // background color
+        backgroundColorPicker = new ColorPicker("Background color", new ColorPickerAdapter() {
+            @Override
+            public void finished(Color newColor) {
+                chip8Actor.setBackgroundColor(newColor);
+            }
+        });
+        backgroundColorPicker.setModal(true);
+        backgroundColorPicker.setAllowAlphaEdit(false);
+
+        openBackgroundColorPicker.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                backgroundColorPicker.fadeIn();
+            }
+        });
+
+        // pixel color
+        pixelColorPicker = new ColorPicker("Pixel color", new ColorPickerAdapter() {
+            @Override
+            public void finished(Color newColor) {
+                chip8Actor.setPixelColor(newColor);
+            }
+        });
+        pixelColorPicker.setModal(true);
+        pixelColorPicker.setAllowAlphaEdit(false);
+
+        openPixelColorPicker.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                pixelColorPicker.fadeIn();
+            }
+        });
+
         settingsWindow.setModal(true);
         settingsWindow.setFillParent(true);
         settingsWindow.add(settingsTable);
