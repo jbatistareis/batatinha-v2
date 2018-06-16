@@ -2,6 +2,7 @@ package com.jbatista.batatinha.v2;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,19 +10,18 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jbatista.batatinha.core.Chip8;
 import com.jbatista.batatinha.core.Key;
-import com.jbatista.batatinha.core.Note;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class Chip8Actor extends Actor {
 
-    private final Preferences preferences = Gdx.app.getPreferences("com.jbatista.batatinha.v2");
+    private static final Preferences preferences = Gdx.app.getPreferences("com.jbatista.batatinha.v2");
+    private final Sound beep = Gdx.audio.newSound(Gdx.files.local("beep.wav"));
 
     private final Chip8 chip8 = new Chip8();
     private final Pixmap pixmap = new Pixmap(128, 64, Pixmap.Format.RGB888);
     private Texture texture;
 
-    private Note buzzerNote = Note.valueOf(preferences.getString("buzzer_note", "A"));
     private int cpuSpeed = preferences.getInteger("cpu_speed", 500);
     private Color backgroundColor = Color.valueOf(preferences.getString("bg_color", "000000FF"));
     private Color pixelColor = Color.valueOf(preferences.getString("px_color", "FFFFFFFF"));
@@ -37,8 +37,7 @@ public class Chip8Actor extends Actor {
     @Override
     public void act(float delta) {
         if (chip8.timerTick()) {
-            // beep!
-            // libgdx doesnt play nice with sine waves... T_T
+            beep.play();
         }
 
         if (!pause) {
@@ -82,6 +81,7 @@ public class Chip8Actor extends Actor {
     @Override
     protected void finalize() throws Throwable {
         texture.dispose();
+        beep.dispose();
     }
 
     public void startProgram(InputStream program) throws IOException {
@@ -109,16 +109,6 @@ public class Chip8Actor extends Actor {
 
     public boolean isPaused() {
         return pause;
-    }
-
-    public void setBuzzerNote(Note buzzerNote) {
-        this.buzzerNote = buzzerNote;
-        preferences.putString("buzzer_note", buzzerNote.toString());
-        preferences.flush();
-    }
-
-    public Note getBuzzerNote() {
-        return buzzerNote;
     }
 
     public int getCpuSpeed() {

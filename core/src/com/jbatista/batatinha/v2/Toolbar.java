@@ -38,9 +38,6 @@ public class Toolbar {
     private final Table settingsTable = new VisTable(true);
     private final VisLabel cpuSpeedLabel = new VisLabel("CPU speed:");
     private final VisSelectBox<String> cpuSpeedSelect = new VisSelectBox<>();
-    private final VisLabel buzzerNoteLabel = new VisLabel("Speaker note:");
-    private final VisSelectBox<String> buzzerNoteSelect = new VisSelectBox<>();
-    private final VisTextButton buzzerPlay = new VisTextButton("Preview");
     private final VisLabel colorsLabel = new VisLabel("Display colors:");
     private final VisTextButton openBackgroundColorPicker = new VisTextButton("Background");
     private final VisTextButton openPixelColorPicker = new VisTextButton("Pixel");
@@ -114,21 +111,6 @@ public class Toolbar {
             notes[i] = (Note.values()[i].toString());
         }
 
-        buzzerNoteSelect.setItems(notes);
-        buzzerNoteSelect.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeListener.ChangeEvent ce, Actor actor) {
-                chip8Actor.setBuzzerNote(Note.valueOf(buzzerNoteSelect.getSelected()));
-            }
-        });
-
-        buzzerPlay.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                // beep!
-            }
-        });
-
         // background color
         backgroundColorPicker = new ColorPicker("Background color", new ColorPickerAdapter() {
             @Override
@@ -179,15 +161,12 @@ public class Toolbar {
         settingsTable.add(cpuSpeedLabel, cpuSpeedSelect);
 
         settingsTable.row().left();
-        settingsTable.add(buzzerNoteLabel, buzzerNoteSelect, buzzerPlay);
-
-        settingsTable.row().left();
         settingsTable.add(colorsLabel, openBackgroundColorPicker, openPixelColorPicker);
 
         settingsTable.row().colspan(3).center().pad(padding);
         settingsTable.add(settingsClose);
 
-        settingsWindow.sizeBy(170, 40);
+        settingsWindow.sizeBy(170, 20);
         settingsWindow.setModal(true);
         settingsWindow.setMovable(false);
         settingsWindow.setCenterOnAdd(true);
@@ -254,7 +233,6 @@ public class Toolbar {
                     default:
                         break;
                 }
-                buzzerNoteSelect.setSelected(chip8Actor.getBuzzerNote().toString());
                 backgroundColorPicker.setColor(chip8Actor.getBackgroundColor());
                 pixelColorPicker.setColor(chip8Actor.getPixelColor());
 
