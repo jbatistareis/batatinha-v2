@@ -1,5 +1,8 @@
 package com.jbatista.batatinha.v2;
 
+/**
+ * Thanks to Revival Studios [ http://www.revival-studios.com/ ]
+ */
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -37,13 +40,13 @@ public class BatatinhaGame extends ApplicationAdapter {
         rootTable = new VisTable(true);
         rootTable.setFillParent(true);
 
-        rootTable.row().center().top().pad(padding);
+        rootTable.row();
         rootTable.add(chip8Actor);
 
-        rootTable.row().center().pad(padding);
+        rootTable.row().expand().fill();
         rootTable.add(new KeyPad(chip8Actor).getTable());
 
-        rootTable.row().center().bottom().pad(padding);
+        rootTable.row().pad(padding);
         rootTable.add(new Toolbar(chip8Actor, stage).getTable());
 
         stage.addActor(rootTable);

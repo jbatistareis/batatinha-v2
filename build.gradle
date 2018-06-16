@@ -55,7 +55,7 @@ project(":core") {
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.kotcrab.vis:vis-ui:1.3.0"
-        compile "com.jbatista:batatinha-core:0.1"
+        compile "com.jbatista:batatinha-core:1.0"
         
     }
 }

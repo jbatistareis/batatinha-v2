@@ -1,5 +1,6 @@
 package com.jbatista.batatinha.v2;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -8,7 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.jbatista.batatinha.core.Note;
+import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.util.adapter.AbstractListAdapter.SelectionMode;
+import com.kotcrab.vis.ui.util.adapter.ArrayAdapter;
+import com.kotcrab.vis.ui.widget.ListView;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSelectBox;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -16,9 +22,9 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisWindow;
 import com.kotcrab.vis.ui.widget.color.ColorPicker;
 import com.kotcrab.vis.ui.widget.color.ColorPickerAdapter;
-import com.kotcrab.vis.ui.widget.file.FileChooser;
-import com.kotcrab.vis.ui.widget.file.FileChooser.Mode;
-import com.kotcrab.vis.ui.widget.file.SingleFileChooserListener;
+import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
+import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
+import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneAdapter;
 import java.io.IOException;
 
 public class Toolbar {
@@ -32,7 +38,9 @@ public class Toolbar {
     private final VisTextButton settings = new VisTextButton("Settings");
     private final VisTextButton reset = new VisTextButton("Reset");
 
-    private FileChooser fileChooser = new FileChooser(Mode.OPEN);
+    private final VisWindow loadWindow = new VisWindow("Load program");
+    private final Table loadWindowTabContentTable = new VisTable(true);
+    private final TabbedPane loadTabs = new TabbedPane();
 
     private final VisWindow settingsWindow = new VisWindow("Settings");
     private final Table settingsTable = new VisTable(true);
@@ -59,25 +67,32 @@ public class Toolbar {
 
     public Table getTable() {
         // <editor-fold defaultstate="collapsed" desc="load window, double click to expand (Netbeans)">
-        fileChooser.setModal(true);
-        fileChooser.setFillParent(true);
-        fileChooser.setMultiSelectionEnabled(false);
-        fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
-        fileChooser.setListener(new SingleFileChooserListener() {
-            @Override
-            protected void selected(FileHandle fh) {
-                try {
-                    chip8Actor.startProgram(fh.read());
-                } catch (IOException ex) {
-                    // some sort feedback
-                }
-            }
+        // tabs
+        loadTabs.add(getInternalFilesTab("CHIP8", "chip8"));
+        loadTabs.add(getInternalFilesTab("SuperCHIP", "superchip"));
 
+        if (Gdx.files.isExternalStorageAvailable()) {
+            loadTabs.add(getExternalFilesTab("SD Card"));
+        }
+
+        loadTabs.addListener(new TabbedPaneAdapter() {
             @Override
-            public void canceled() {
-                chip8Actor.resume();
+            public void switchedTab(Tab tab) {
+                loadWindowTabContentTable.clearChildren();
+                loadWindowTabContentTable.row().expandX().fillX();
+                loadWindowTabContentTable.add(tab.getContentTable());
             }
         });
+        loadTabs.switchTab(0);
+
+        loadWindow.row().expandX().fillX();
+        loadWindow.add(loadTabs.getTabsPane());
+
+        loadWindow.row().expand().fill();
+        loadWindow.add(loadWindowTabContentTable);
+
+        loadWindow.setModal(true);
+        loadWindow.setFillParent(true);
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="settings window, double click to expand (Netbeans)">
@@ -208,7 +223,7 @@ public class Toolbar {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 chip8Actor.pause();
-                stage.addActor(fileChooser.fadeIn());
+                stage.addActor(loadWindow.fadeIn());
             }
         });
 
@@ -252,6 +267,86 @@ public class Toolbar {
         toolbarPadTable.add(pause.pad(padding), load.pad(padding), settings.pad(padding), reset.pad(padding));
 
         return toolbarPadTable;
+    }
+
+    private Tab getInternalFilesTab(String title, String directory) {
+        return createTab(title, Gdx.files.local(directory).list(".ch8"));
+    }
+
+    private Tab getExternalFilesTab(String title) {
+        Gdx.files.external("chip8").mkdirs();
+        return createTab(title, Gdx.files.external("/chip8").list());
+    }
+
+    private Tab createTab(String title, FileHandle[] filesList) {
+        return new Tab(false, false) {
+            @Override
+            public String getTabTitle() {
+                return title;
+            }
+
+            @Override
+            public Table getContentTable() {
+                final Array<FileHandle> files = new Array<FileHandle>(filesList);
+                final ArrayAdapter<FileHandle, VisTable> adapter = new ArrayAdapter<FileHandle, VisTable>(files) {
+                    @Override
+                    protected VisTable createView(FileHandle item) {
+                        final VisTable table = new VisTable(true);
+                        table.row().expandX().fillX();
+                        table.add(new VisLabel(item.name().replace(".ch8", "")));
+
+                        return table;
+                    }
+
+                    @Override
+                    protected void selectView(VisTable table) {
+                        table.setBackground(VisUI.getSkin().getDrawable("list-selection"));
+                    }
+
+                    @Override
+                    protected void deselectView(VisTable table) {
+                        table.setBackground(VisUI.getSkin().getDrawable("window-bg"));
+                    }
+
+                };
+                adapter.setSelectionMode(SelectionMode.SINGLE);
+
+                final ListView<FileHandle> listView = new ListView<FileHandle>(adapter);
+                final VisTextButton load = new VisTextButton("Load");
+                final VisTextButton cancel = new VisTextButton("Cancel");
+
+                load.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        try {
+                            chip8Actor.startProgram(adapter.getSelection().get(0).read());
+                        } catch (IOException ex) {
+                            // some sort feedback
+                        } finally {
+                            loadWindow.fadeOut();
+                        }
+                    }
+                });
+                cancel.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        loadWindow.fadeOut();
+                        chip8Actor.resume();
+                    }
+                });
+
+                if (filesList.length > 0) {
+                    listView.getMainTable().row().pad(padding);
+
+                    final VisTable footerTable = new VisTable(true);
+                    footerTable.add(load, cancel);
+
+                    listView.getMainTable().add(footerTable);
+                }
+
+                return listView.getMainTable();
+            }
+        };
     }
 
 }
