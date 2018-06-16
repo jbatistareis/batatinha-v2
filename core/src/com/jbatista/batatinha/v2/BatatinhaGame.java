@@ -37,9 +37,14 @@ public class BatatinhaGame extends ApplicationAdapter {
         rootTable = new VisTable(true);
         rootTable.setFillParent(true);
 
-        rootTable.add(chip8Actor).pad(padding).row();
-        rootTable.add(new KeyPad(chip8Actor).getTable()).pad(padding).row();
-        rootTable.add(new Toolbar(chip8Actor, stage).getTable()).pad(padding).row();
+        rootTable.row().center().top().pad(padding);
+        rootTable.add(chip8Actor);
+
+        rootTable.row().center().pad(padding);
+        rootTable.add(new KeyPad(chip8Actor).getTable());
+
+        rootTable.row().center().bottom().pad(padding);
+        rootTable.add(new Toolbar(chip8Actor, stage).getTable());
 
         stage.addActor(rootTable);
 

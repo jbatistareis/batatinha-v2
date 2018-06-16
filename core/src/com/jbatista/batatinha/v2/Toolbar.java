@@ -35,13 +35,14 @@ public class Toolbar {
 
     private final VisWindow settingsWindow = new VisWindow("Settings");
     private final Table settingsTable = new VisTable(true);
-    private final VisLabel cpuSpeedLabel = new VisLabel("Emulated CPU speed");
-    private final VisSelectBox<String> cpuSpeedSelect = new VisSelectBox();
-    private final VisLabel beepNoteLabel = new VisLabel("Speaker note");
-    private final VisSelectBox<String> beepNoteSelect = new VisSelectBox();
-    private final VisLabel colorsLabel = new VisLabel("Display colors");
+    private final VisLabel cpuSpeedLabel = new VisLabel("CPU speed:");
+    private final VisSelectBox<String> cpuSpeedSelect = new VisSelectBox<>();
+    private final VisLabel beepNoteLabel = new VisLabel("Speaker note:");
+    private final VisSelectBox<String> beepNoteSelect = new VisSelectBox<>();
+    private final VisLabel colorsLabel = new VisLabel("Display colors:");
     private final VisTextButton openBackgroundColorPicker = new VisTextButton("Background");
     private final VisTextButton openPixelColorPicker = new VisTextButton("Pixel");
+    private final VisTextButton settingsClose = new VisTextButton("Close");
     private ColorPicker backgroundColorPicker;
     private ColorPicker pixelColorPicker;
 
@@ -139,12 +140,13 @@ public class Toolbar {
             }
         });
         backgroundColorPicker.setModal(true);
+        backgroundColorPicker.setMovable(false);
         backgroundColorPicker.setAllowAlphaEdit(false);
 
         openBackgroundColorPicker.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                backgroundColorPicker.fadeIn();
+                settingsTable.getStage().addActor(backgroundColorPicker.fadeIn());
             }
         });
 
@@ -156,24 +158,46 @@ public class Toolbar {
             }
         });
         pixelColorPicker.setModal(true);
+        pixelColorPicker.setMovable(false);
         pixelColorPicker.setAllowAlphaEdit(false);
 
         openPixelColorPicker.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                pixelColorPicker.fadeIn();
+                settingsTable.getStage().addActor(pixelColorPicker.fadeIn());
             }
         });
 
+        // close
+        settingsClose.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                settingsWindow.fadeOut();
+                chip8Actor.resume();
+            }
+        });
+
+        // table
+        settingsTable.row().left();
+        settingsTable.add(cpuSpeedLabel, cpuSpeedSelect);
+
+        settingsTable.row().left();
+        settingsTable.add(beepNoteLabel, beepNoteSelect);
+
+        settingsTable.row().left();
+        settingsTable.add(colorsLabel, openBackgroundColorPicker, openPixelColorPicker);
+
+        settingsTable.row().colspan(3).center();
+        settingsTable.add(settingsClose);
+
+        settingsWindow.sizeBy(170, 10);
         settingsWindow.setModal(true);
-        settingsWindow.setFillParent(true);
+        settingsWindow.setMovable(false);
+        settingsWindow.setCenterOnAdd(true);
         settingsWindow.add(settingsTable);
         // </editor-fold>
 
-        // <editor-fold defaultstate="collapsed" desc="reset window, double click to expand (Netbeans)">
-        resetWindow.setModal(true);
-        resetWindow.setCenterOnAdd(true);
-        resetWindow.setMovable(false);
+        // <editor-fold defaultstate="collapsed" desc="reset window, double click to expand (Netbeans)">        
         resetYes.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -189,6 +213,10 @@ public class Toolbar {
             }
         });
         resetTable.add(resetYes.pad(padding), resetNo.pad(padding));
+
+        resetWindow.setModal(true);
+        resetWindow.setCenterOnAdd(true);
+        resetWindow.setMovable(false);
         resetWindow.add(resetTable);
         // </editor-fold>
 
