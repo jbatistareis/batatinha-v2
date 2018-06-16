@@ -270,12 +270,12 @@ public class Toolbar {
     }
 
     private Tab getInternalFilesTab(String title, String directory) {
-        return createTab(title, Gdx.files.local(directory).list(".ch8"));
+        return createTab(title, Gdx.files.internal(directory).list(".ch8"));
     }
 
     private Tab getExternalFilesTab(String title) {
         Gdx.files.external("chip8").mkdirs();
-        return createTab(title, Gdx.files.external("/chip8").list());
+        return createTab(title, Gdx.files.external("chip8").list());
     }
 
     private Tab createTab(String title, FileHandle[] filesList) {
