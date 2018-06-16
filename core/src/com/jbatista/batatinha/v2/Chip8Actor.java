@@ -1,5 +1,7 @@
 package com.jbatista.batatinha.v2;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,18 +9,22 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jbatista.batatinha.core.Chip8;
 import com.jbatista.batatinha.core.Key;
+import com.jbatista.batatinha.core.Note;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class Chip8Actor extends Actor {
 
+    private final Preferences preferences = Gdx.app.getPreferences("com.jbatista.batatinha.v2");
+
     private final Chip8 chip8 = new Chip8();
     private final Pixmap pixmap = new Pixmap(128, 64, Pixmap.Format.RGB888);
     private Texture texture;
 
-    private int cpuSpeed = 500;
-    private Color backgroundColor = Color.BLACK;
-    private Color pixelColor = Color.WHITE;
+    private Note buzzerNote = Note.valueOf(preferences.getString("buzzer_note", "A"));
+    private int cpuSpeed = preferences.getInteger("cpu_speed", 500);
+    private Color backgroundColor = Color.valueOf(preferences.getString("bg_color", "000000FF"));
+    private Color pixelColor = Color.valueOf(preferences.getString("px_color", "FFFFFFFF"));
 
     private int bufferPosition;
     private int scale = 1;
@@ -105,16 +111,44 @@ public class Chip8Actor extends Actor {
         return pause;
     }
 
+    public void setBuzzerNote(Note buzzerNote) {
+        this.buzzerNote = buzzerNote;
+        preferences.putString("buzzer_note", buzzerNote.toString());
+        preferences.flush();
+    }
+
+    public Note getBuzzerNote() {
+        return buzzerNote;
+    }
+
+    public int getCpuSpeed() {
+        return cpuSpeed;
+    }
+
     public void setCpuSpeed(int cpuSpeed) {
         this.cpuSpeed = cpuSpeed;
+        preferences.putInteger("cpu_speed", cpuSpeed);
+        preferences.flush();
+    }
+
+    public Color getBackgroundColor() {
+        return backgroundColor;
     }
 
     public void setBackgroundColor(Color backgroundColor) {
         this.backgroundColor = backgroundColor;
+        preferences.putString("bg_color", backgroundColor.toString());
+        preferences.flush();
+    }
+
+    public Color getPixelColor() {
+        return pixelColor;
     }
 
     public void setPixelColor(Color pixelColor) {
         this.pixelColor = pixelColor;
+        preferences.putString("px_color", pixelColor.toString());
+        preferences.flush();
     }
 
     public void pressKey(Key key) {

@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.jbatista.batatinha.core.Note;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSelectBox;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -37,8 +38,9 @@ public class Toolbar {
     private final Table settingsTable = new VisTable(true);
     private final VisLabel cpuSpeedLabel = new VisLabel("CPU speed:");
     private final VisSelectBox<String> cpuSpeedSelect = new VisSelectBox<>();
-    private final VisLabel beepNoteLabel = new VisLabel("Speaker note:");
-    private final VisSelectBox<String> beepNoteSelect = new VisSelectBox<>();
+    private final VisLabel buzzerNoteLabel = new VisLabel("Speaker note:");
+    private final VisSelectBox<String> buzzerNoteSelect = new VisSelectBox<>();
+    private final VisTextButton buzzerPlay = new VisTextButton("Preview");
     private final VisLabel colorsLabel = new VisLabel("Display colors:");
     private final VisTextButton openBackgroundColorPicker = new VisTextButton("Background");
     private final VisTextButton openPixelColorPicker = new VisTextButton("Pixel");
@@ -107,28 +109,23 @@ public class Toolbar {
         });
 
         // speaker
-        beepNoteSelect.setItems("B", "A", "C", "D", "E", "F", "G");
-        beepNoteSelect.addListener(new ChangeListener() {
+        final String[] notes = new String[Note.values().length];
+        for (int i = 0; i < Note.values().length; i++) {
+            notes[i] = (Note.values()[i].toString());
+        }
+
+        buzzerNoteSelect.setItems(notes);
+        buzzerNoteSelect.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeListener.ChangeEvent ce, Actor actor) {
-                switch (beepNoteSelect.getSelectedIndex()) {
-                    case 0:
-                        break;
-                    case 1:
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
-                    case 5:
-                        break;
-                    case 6:
-                        break;
-                    default:
-                        break;
-                }
+                chip8Actor.setBuzzerNote(Note.valueOf(buzzerNoteSelect.getSelected()));
+            }
+        });
+
+        buzzerPlay.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // beep!
             }
         });
 
@@ -182,15 +179,15 @@ public class Toolbar {
         settingsTable.add(cpuSpeedLabel, cpuSpeedSelect);
 
         settingsTable.row().left();
-        settingsTable.add(beepNoteLabel, beepNoteSelect);
+        settingsTable.add(buzzerNoteLabel, buzzerNoteSelect, buzzerPlay);
 
         settingsTable.row().left();
         settingsTable.add(colorsLabel, openBackgroundColorPicker, openPixelColorPicker);
 
-        settingsTable.row().colspan(3).center();
+        settingsTable.row().colspan(3).center().pad(padding);
         settingsTable.add(settingsClose);
 
-        settingsWindow.sizeBy(170, 10);
+        settingsWindow.sizeBy(170, 40);
         settingsWindow.setModal(true);
         settingsWindow.setMovable(false);
         settingsWindow.setCenterOnAdd(true);
@@ -240,6 +237,27 @@ public class Toolbar {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 chip8Actor.pause();
+
+                switch (chip8Actor.getCpuSpeed()) {
+                    case 500:
+                        cpuSpeedSelect.setSelectedIndex(0);
+                        break;
+                    case 1000:
+                        cpuSpeedSelect.setSelectedIndex(1);
+                        break;
+                    case 2000:
+                        cpuSpeedSelect.setSelectedIndex(2);
+                        break;
+                    case 3680:
+                        cpuSpeedSelect.setSelectedIndex(3);
+                        break;
+                    default:
+                        break;
+                }
+                buzzerNoteSelect.setSelected(chip8Actor.getBuzzerNote().toString());
+                backgroundColorPicker.setColor(chip8Actor.getBackgroundColor());
+                pixelColorPicker.setColor(chip8Actor.getPixelColor());
+
                 stage.addActor(settingsWindow.fadeIn());
             }
         });
