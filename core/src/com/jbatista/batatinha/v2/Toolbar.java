@@ -335,14 +335,14 @@ public class Toolbar {
                     }
                 });
 
+                listView.getMainTable().row().pad(padding);
+
+                final VisTable footerTable = new VisTable(true);
                 if (filesList.length > 0) {
-                    listView.getMainTable().row().pad(padding);
-
-                    final VisTable footerTable = new VisTable(true);
-                    footerTable.add(load, cancel);
-
-                    listView.getMainTable().add(footerTable);
+                    footerTable.add(load);
                 }
+                footerTable.add(cancel);
+                listView.getMainTable().add(footerTable);
 
                 return listView.getMainTable();
             }

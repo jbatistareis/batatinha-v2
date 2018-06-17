@@ -11,10 +11,9 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisTable;
-import com.kotcrab.vis.ui.widget.file.FileChooser;
 
 public class BatatinhaGame extends ApplicationAdapter {
 
@@ -29,12 +28,12 @@ public class BatatinhaGame extends ApplicationAdapter {
     @Override
     public void create() {
         VisUI.load();
-        FileChooser.setDefaultPrefsName("com.jbatista.batatinha.v2.filechooser");
 
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        stage = new Stage(new ScreenViewport(camera));
+        stage = new Stage(new FitViewport(450, 800, camera));
 
         chip8Actor = new Chip8Actor();
+        chip8Actor.setSize(450, 225);
         inputProcessor.setChip8Actor(chip8Actor);
 
         rootTable = new VisTable(true);
@@ -67,10 +66,6 @@ public class BatatinhaGame extends ApplicationAdapter {
 
     @Override
     public void resize(int width, int height) {
-        chip8Actor.scaleBy(Gdx.graphics.getWidth() / chip8Actor.getWidth());
-        camera.viewportWidth = width;
-        camera.viewportHeight = height;
-        camera.position.set(width / 2, height / 2, 0);
         stage.getViewport().update(width, height);
     }
 
