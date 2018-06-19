@@ -445,7 +445,7 @@ public class Toolbar {
                                     ? Gdx.files.internal(directory + "/" + adapter.getSelection().get(0)).read()
                                     : Gdx.files.external(directory + "/" + adapter.getSelection().get(0)).read());
                         } catch (IOException ex) {
-                            // some sort feedback
+                            throw new RuntimeException(ex);
                         } finally {
                             loadWindow.fadeOut();
                         }

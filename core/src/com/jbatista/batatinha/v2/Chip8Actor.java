@@ -16,7 +16,7 @@ import java.io.InputStream;
 public class Chip8Actor extends Actor {
 
     private static final Preferences preferences = Gdx.app.getPreferences("com.jbatista.batatinha.v2");
-    private final Sound beep = Gdx.audio.newSound(Gdx.files.local("beep.wav"));
+    private final Sound beep = Gdx.audio.newSound(Gdx.files.internal("beep.wav"));
 
     private final Chip8 chip8 = new Chip8();
     private final Pixmap pixmap = new Pixmap(128, 64, Pixmap.Format.RGB888);
