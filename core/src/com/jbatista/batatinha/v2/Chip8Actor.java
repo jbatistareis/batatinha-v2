@@ -36,13 +36,13 @@ public class Chip8Actor extends Actor {
 
     @Override
     public void act(float delta) {
-        if (chip8.timerTick()) {
+        if (chip8.timerStep()) {
             beep.play();
         }
 
         if (!pause) {
             for (int i = 0; i < (cpuSpeed * delta); i++) {
-                chip8.cpuTick();
+                chip8.cpuStep();
             }
         }
 
