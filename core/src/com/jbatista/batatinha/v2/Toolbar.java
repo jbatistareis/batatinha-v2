@@ -57,7 +57,7 @@ public class Toolbar {
     private final VisTextButton resetYes = new VisTextButton("Yes");
     private final VisTextButton resetNo = new VisTextButton("No");
 
-    // <editor-fold defaultstate="collapsed" desc="hardcoded games list, double click to expand (Netbeans)">
+    // <editor-fold defaultstate="collapsed" desc="hardcoded games list">
     private static final String[] chip8Games = {
         "15 Puzzle [Roger Ivie] (alt).ch8",
         "15 Puzzle [Roger Ivie].ch8",
@@ -187,7 +187,7 @@ public class Toolbar {
     }
 
     public Table getTable() {
-        // <editor-fold defaultstate="collapsed" desc="load window, double click to expand (Netbeans)">
+        // <editor-fold defaultstate="collapsed" desc="load window">
         // tabs
         loadTabs.add(getInternalFilesTab("CHIP8", "chip8", chip8Games));
         loadTabs.add(getInternalFilesTab("SuperCHIP", "superchip", superChipGames));
@@ -216,7 +216,7 @@ public class Toolbar {
         loadWindow.setFillParent(true);
         // </editor-fold>
 
-        // <editor-fold defaultstate="collapsed" desc="settings window, double click to expand (Netbeans)">
+        // <editor-fold defaultstate="collapsed" desc="settings window">
         // cpu
         cpuSpeedSelect.setItems("500 Hz", "1 MHz", "2 MHz", "3.68 MHz");
         cpuSpeedSelect.addListener(new ChangeListener() {
@@ -303,7 +303,7 @@ public class Toolbar {
         settingsWindow.add(settingsTable);
         // </editor-fold>
 
-        // <editor-fold defaultstate="collapsed" desc="reset window, double click to expand (Netbeans)">        
+        // <editor-fold defaultstate="collapsed" desc="reset window">        
         resetYes.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -326,7 +326,7 @@ public class Toolbar {
         resetWindow.add(resetTable);
         // </editor-fold>
 
-        // <editor-fold defaultstate="collapsed" desc="buttons, double click to expand (Netbeans)">
+        // <editor-fold defaultstate="collapsed" desc="buttons">
         pause.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

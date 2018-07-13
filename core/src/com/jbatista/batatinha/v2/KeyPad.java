@@ -29,14 +29,14 @@ public class KeyPad {
     private final VisTextButton buttonE = new VisTextButton("E");
     private final VisTextButton buttonF = new VisTextButton("F");
 
-    private static final int padding = 20;
+    private static final int padding = 35;
 
     public KeyPad(Chip8Actor chip8Actor) {
         this.chip8Actor = chip8Actor;
     }
 
     public Table getTable() {
-        // <editor-fold defaultstate="collapsed" desc="buttom map, double click to expand (Netbeans)">
+        // <editor-fold defaultstate="collapsed" desc="buttom map">
         button0.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
